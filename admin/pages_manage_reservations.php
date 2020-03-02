@@ -114,7 +114,7 @@
 
 
                                                         <td>
-                                                            <a  href="pages_pay_flightreservation.php?jf_number=<?php echo $row->jf_number;?>">
+                                                            <a  href="pages_pay_flightreservation.php?jfs_number=<?php echo $row->jfs_number;?>&jp_id=<?php echo $row->jp_id;?>&jp_number=<?php echo $row->jp_number;?>">
                                                                 <span class="label label-success">
                                                                      Pay
                                                                 </span>                                                                  
