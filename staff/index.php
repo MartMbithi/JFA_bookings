@@ -1,15 +1,14 @@
 <?php
     session_start();
     include('_partials/config.php');//get configuration file
-    if(isset($_POST['Login']))
+    if(isset($_POST['login']))
     {
         $js_email = $_POST['js_email'];
         $js_pwd = sha1(md5($_POST['js_pwd']));//double encrypt to increase security
-        $js_access_role = $_POST['js_access_role'];
-        $stmt=$mysqli->prepare("SELECT js_email ,js_pwd , js_id, js_access_role  FROM jordan_staff  WHERE js_email=? AND js_pw=? AND js_access_role=? ");//sql to log in user
-        $stmt->bind_param('sss',$js_email, $js_pwd, $js_access_role);//bind fetched parameters
+        $stmt=$mysqli->prepare("SELECT js_email, js_pwd, js_id  FROM jordan_staff WHERE js_email=? AND js_pwd=?");//sql to log in user
+        $stmt->bind_param('ss',$js_email, $js_pwd);//bind fetched parameters
         $stmt->execute();//execute bind
-        $stmt -> bind_result($js_email, $js_pwd, $js_access_role, $js_id);//bind result
+        $stmt -> bind_result($js_email, $js_pwd, $js_id);//bind result
         $rs=$stmt->fetch();
         $_SESSION['js_id'] = $js_id;//assaign session to admin id
         //$uip=$_SERVER['REMOTE_ADDR'];
@@ -39,16 +38,11 @@
                 <img src="images/logo.png" alt="logo" />
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="first_name1" name="js_email" type="email" class="validate">
+                        <input id="first_name1" name="js_email" type="email" required class="validate">
                         <label for="first_name1">Email</label>
                     </div>
                 </div>
-                <div class="row" style="displa">
-                    <div class="input-field col s12">
-                        <input id="first_name1" name="js_email" type="email" class="validate">
-                        <label for="first_name1">Email</label>
-                    </div>
-                </div>
+                
                 <div class="row">
                     <div class="input-field col s12">
                         <input id="first_name1" name="js_pwd" type="password" class="validate">
@@ -58,7 +52,7 @@
                 
                 <div class="row">
                     <div class="input-field col s12">
-                        <input type="submit" name="Login" class="waves-effect waves-light btn-large btn-log-in" value="Login">
+                        <button type="submit" name="login" class="waves-effect waves-light btn-large btn-log-in">Login</button>
                     </div>
                 </div>
                 <a href="forgot_pwd.php" class="for-pass">Forgot Password?</a>

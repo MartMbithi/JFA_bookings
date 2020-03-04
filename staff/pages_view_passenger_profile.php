@@ -3,8 +3,8 @@
   include('_partials/config.php');//load config 
   include('_partials/checklogin.php'); //load checklogin 
   check_login();//invoke check login method
-  $ja_id = $_SESSION['ja_id'];
-  //load page using ja_id as session holder
+  $js_id = $_SESSION['js_id'];
+  //load page using js_id as session holder
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -3,8 +3,8 @@
   include('_partials/config.php');//load config 
   include('_partials/checklogin.php'); //load checklogin 
   check_login();//invoke check login method
-  $ja_id = $_SESSION['ja_id'];
-  //use admin id to hold this page's session
+  $js_id = $_SESSION['js_id'];
+  //load page using js_id as session holder
     if(isset($_POST['PayflightTicket']))
         {
             //add payment
