@@ -5,11 +5,11 @@
   check_login();//invoke check login method
   $ja_id = $_SESSION['ja_id'];
   //load page using ja_id as session holder
-  //cancel flight
-  if(isset($_GET['cancelFlightReservation']))
+  //delete Feedback
+  if(isset($_GET['delete_password_reset']))
   {
-        $id=intval($_GET['cancelFlightReservation']);
-        $adn="DELETE FROM  jordan_flights_reservation  WHERE jfs_id = ?";
+        $id=intval($_GET['delete_password_reset']);
+        $adn="DELETE FROM  jordan_password_resets  WHERE jps_id = ?";
         $stmt= $mysqli->prepare($adn);
         $stmt->bind_param('i',$id);
         $stmt->execute();
@@ -17,7 +17,7 @@
   
           if($stmt)
           {
-            $info = "Flights Reservation Cancelled";
+            $info = "Password Reset Deleted";
           }
             else
             {
@@ -44,7 +44,7 @@
                     <ul><!--Breadcrumps-->
                         <li><a href="pages_dashboard.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
                         </li>
-                        <li><a href="">/ <i class="fa fa-calendar-check-o" aria-hidden="true"></i> Reservations</a>
+                        <li><a href="">/ <i class="fa fa-lock" aria-hidden="true"></i> Passsword Reset Requests</a>
                         </li>
                         <li class="active-bre"><a href="#">Manage</a>
                         </li>
@@ -55,7 +55,7 @@
                         <div class="col-md-12">
                             <div class="box-inn-sp">
                                 <div class="inn-title">
-                                    <h4>Manage Flights Reservations</h4>
+                                    <h4>Passenger Reset Requests</h4>
                                     <a class="dropdown-button drop-down-meta" href="#" data-activates="dr-users"><i class="material-icons">more_vert</i></a>
                                     <ul id="dr-users" class="dropdown-content">
                                         <li><a href="javascript:window.print()"><i class="fa fa-print"></i>Print</a>
@@ -66,88 +66,83 @@
                                 <div class="tab-inn">
                                     <div class="table-responsive table-desi">
                                         <table class="table table-hover">
-                                        <thead>
+                                            <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>No.</th>
-                                                    <th>Plane Name</th>
-                                                    <th>Flight Route</th>
-                                                    <th>Flight Time</th>
-                                                    <th>Pass Name</th>
-                                                    <th>Flight Fare</th>
-                                                    <th>Flight Date</th>
+                                                    <th>Email</th>
+                                                    <th>Token</th>
+                                                    <th>Timestamp</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                    //Get details of all flights
-                                                    $ret="SELECT * FROM  jordan_flights_reservation  ORDER BY RAND() "; 
+                                                    //Get details of all pwd resets
+                                                    $ret="SELECT * FROM  jordan_password_resets ORDER BY RAND() "; 
                                                     $stmt= $mysqli->prepare($ret) ;
                                                     $stmt->execute() ;//ok
                                                     $res=$stmt->get_result();
                                                     $cnt=1;
                                                     while($row=$res->fetch_object())
                                                     {
-                                                      /* Trim date from default timestamp to
-                                                        *  User Uderstandable Formart  DD-MM-YYYY : 
-                                                        */
-                                                        $dateReservationMade = $row->jfs_date;
+                                                        $t_stamp = $row->jps_tstamp;
+
+                                                        
                                                 ?>
-
                                                     <tr>
-
                                                         <td><?php echo $cnt;?></td>
-                                                        <td><?php echo $row->jfs_number;?></td>
-                                                        <td><?php echo $row->jf_name;?></td>
-                                                        <td><?php echo $row->jf_route;?></td>
-                                                        <td><?php echo $row->jf_deptime;?> - <?php echo $row->jf_arrtime;?></td>
-                                                        <td><?php echo $row->jp_name;?></td>
-                                                        <td><?php echo $row->jf_flight_fare;?></td>
-                                                        <td><?php echo date("d-M-Y ", strtotime($dateReservationMade));?> </td>
-
+                                                        <td><?php echo $row->jps_email;?></td>
+                                                        <td>
+                                                            <span class="label label-primary">
+                                                                <?php echo $row->jps_token;?>   
+                                                            </span>    
+                                                        </td>
+                                                        <td><?php echo date("d-M-Y h::m::s ", strtotime($t_stamp));?></td>
 
                                                         <td>
-                                                            <?php 
-                                                                if($row->payment_stats != 'Paid')
-                                                                {
-                                                                    echo 
-                                                                    "  
-                                                                        <a  href='pages_pay_flightreservation.php?jfs_number=$row->jfs_number&jp_id=$row->jp_id&jp_number=$row->jp_number&jfs_id=$row->jfs_id'>
+                                                        <?php 
+                                                            if($row->sent_mail_status == 'Pending')
+                                                            {
+                                                                echo 
+                                                                    "
+                                                                        <a  href='pages_sent_mail.php?email=$row->jps_email&token=$row->jps_token&dummy_pwd=$row->jps_dummy_pwd&jps_id=$row->jps_id'>
                                                                             <span class='label label-success'>
-                                                                                Pay
+                                                                                Update Password
                                                                             </span>                                                                  
                                                                         </a>
                                                                     ";
-                                                                }
-
-                                                                else
-                                                                {
-                                                                    echo
+                                                            }
+                                                            else
+                                                            {
+                                                                echo 
                                                                     "
-                                                                        <span class='label label-primary'>
-                                                                             Already Paid
-                                                                        </span> 
+                                                                        <a target='_blank' href='mailto:$row->jps_email&token=$row->jps_token&dummy_pwd=$row->jps_dummy_pwd&jps_id=$row->jps_id'>
+                                                                            <span class='label label-success'>
+                                                                                Send Email
+                                                                            </span>                                                                  
+                                                                        </a>
                                                                     ";
-                                                                }
-                                                                
-                                                                ?>
-                                                            <br>                                                            
-                                                            <a  href="pages_manage_reservations.php?cancelFlightReservation=<?php echo $row->jfs_id;?>">
+                                                            };
+                                                        ?>    
+                                                                                                                     
+                                                            
+                                                            <br>
+
+
+                                                            <a  href="pages_manage_password_resets.php?delete_password_reset=<?php echo $row->jps_id;?>">
                                                                 <span class="label label-danger">
-                                                                     Cancel
+                                                                     Delete  
                                                                 </span>                                                                  
-                                                            </a>     
+                                                            </a>    
+
                                                         </td>
                                                         
-                                                
-                                                    </tr>
+                                                    </tr> 
                                                 <?php //increment count by 1
                                                     $cnt = $cnt+1;
-                                                }
-                                                ?>    
-                                                
+                                                 }?>
                                             </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

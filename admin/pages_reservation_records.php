@@ -44,9 +44,9 @@
                     <ul><!--Breadcrumps-->
                         <li><a href="pages_dashboard.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
                         </li>
-                        <li><a href="">/ <i class="fa fa-calendar-check-o" aria-hidden="true"></i> Reservations</a>
+                        <li><a href="">/ <i class="fa fa-pie-chart" aria-hidden="true"></i> Advance Reporting</a>
                         </li>
-                        <li class="active-bre"><a href="#">Manage</a>
+                        <li class="active-bre"><a href="#">Reservations</a>
                         </li>
                     </ul>
                 </div>
@@ -55,7 +55,7 @@
                         <div class="col-md-12">
                             <div class="box-inn-sp">
                                 <div class="inn-title">
-                                    <h4>Manage Flights Reservations</h4>
+                                    <h4>Reservations</h4>
                                     <a class="dropdown-button drop-down-meta" href="#" data-activates="dr-users"><i class="material-icons">more_vert</i></a>
                                     <ul id="dr-users" class="dropdown-content">
                                         <li><a href="javascript:window.print()"><i class="fa fa-print"></i>Print</a>
@@ -76,12 +76,11 @@
                                                     <th>Pass Name</th>
                                                     <th>Flight Fare</th>
                                                     <th>Flight Date</th>
-                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                    //Get details of all flights
+                                                    //Get details of all flights reservations
                                                     $ret="SELECT * FROM  jordan_flights_reservation  ORDER BY RAND() "; 
                                                     $stmt= $mysqli->prepare($ret) ;
                                                     $stmt->execute() ;//ok
@@ -104,43 +103,7 @@
                                                         <td><?php echo $row->jf_deptime;?> - <?php echo $row->jf_arrtime;?></td>
                                                         <td><?php echo $row->jp_name;?></td>
                                                         <td><?php echo $row->jf_flight_fare;?></td>
-                                                        <td><?php echo date("d-M-Y ", strtotime($dateReservationMade));?> </td>
-
-
-                                                        <td>
-                                                            <?php 
-                                                                if($row->payment_stats != 'Paid')
-                                                                {
-                                                                    echo 
-                                                                    "  
-                                                                        <a  href='pages_pay_flightreservation.php?jfs_number=$row->jfs_number&jp_id=$row->jp_id&jp_number=$row->jp_number&jfs_id=$row->jfs_id'>
-                                                                            <span class='label label-success'>
-                                                                                Pay
-                                                                            </span>                                                                  
-                                                                        </a>
-                                                                    ";
-                                                                }
-
-                                                                else
-                                                                {
-                                                                    echo
-                                                                    "
-                                                                        <span class='label label-primary'>
-                                                                             Already Paid
-                                                                        </span> 
-                                                                    ";
-                                                                }
-                                                                
-                                                                ?>
-                                                            <br>                                                            
-                                                            <a  href="pages_manage_reservations.php?cancelFlightReservation=<?php echo $row->jfs_id;?>">
-                                                                <span class="label label-danger">
-                                                                     Cancel
-                                                                </span>                                                                  
-                                                            </a>     
-                                                        </td>
-                                                        
-                                                
+                                                        <td><?php echo date("d-M-Y ", strtotime($dateReservationMade));?> </td>                                                      
                                                     </tr>
                                                 <?php //increment count by 1
                                                     $cnt = $cnt+1;

@@ -3,7 +3,8 @@
   include('_partials/config.php');
   include('_partials/checklogin.php');
   check_login();
-  $ja_id = $_SESSION['ja_id'];
+  $js_id = $_SESSION['js_id'];
+  //staff id to hold session
 ?>
 
 <!DOCTYPE html>
@@ -54,27 +55,6 @@
 							</li>
                             <!--End Passengers-->
 
-                            <!--Staff-->
-							<li>
-								<div class="ad-hom-box ad-hom-box-2">
-									<span class="ad-hom-col-com ad-hom-col-2"><i class="fa fa-user-secret"></i></span>
-									<div class="ad-hom-view-com">
-                                    <?php
-                                        //code for summing up all staffs
-                                        $result ="SELECT count(*) FROM jordan_staff";
-                                        $stmt = $mysqli->prepare($result);
-                                        $stmt->execute();
-                                        $stmt->bind_result($staff);
-                                        $stmt->fetch();
-                                        $stmt->close();
-                                    ?>
-									<p>Staffs</p>
-									<h3><?php echo $staff;?></h3>
-									</div>
-								</div>
-							</li>
-                            <!--End Staff-->
-
                             <!--Flights-->
 							<li>
 								<div class="ad-hom-box ad-hom-box-3">
@@ -116,6 +96,27 @@
 								</div>
 							</li>
                             <!--End Reservations-->
+
+                            <!--Paid Reservations-->
+							<li>
+								<div class="ad-hom-box ad-hom-box-2">
+									<span class="ad-hom-col-com ad-hom-col-2"><i class="fa fa-ticket"></i></span>
+									<div class="ad-hom-view-com">
+                                    <?php
+                                        //code for summing up all staffs
+                                        $result ="SELECT COUNT(*) FROM jordan_flights_reservation_payments";
+                                        $stmt = $mysqli->prepare($result);
+                                        $stmt->execute();
+                                        $stmt->bind_result($🤑);
+                                        $stmt->fetch();
+                                        $stmt->close();
+                                    ?>
+									<p>Tickets</p>
+									<h3><?php echo $🤑;?></h3>
+									</div>
+								</div>
+							</li>
+                            <!--Paid Reservations-->
 
 						</ul>
 					</div>

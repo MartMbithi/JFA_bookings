@@ -3,58 +3,9 @@
   include('_partials/config.php');//load config 
   include('_partials/checklogin.php'); //load checklogin 
   check_login();//invoke check login method
-  $ja_id = $_SESSION['ja_id'];
-  //use admin id to hold this page's session
-    if(isset($_POST['PayflightTicket']))
-        {
-            //add payment
-            $jfs_number = $_POST['jfs_number'];
-            $jf_name = $_POST['jf_name'];
-            $jf_route = $_POST['jf_route'];
-            $jf_number = $_POST['jf_number'];
-            $jf_deptime  = $_POST['jf_deptime'];
-            $jf_arrtime =$_POST['jf_arrtime'];
-            $jp_id = $_GET['jp_id'];
-            $jp_number = $_GET['jp_number'];
-            $jp_name = $_POST['jp_name'];
-            $jp_national_id = $_POST['jp_national_id'];
-            $jf_flight_fare = $_POST['jf_flight_fare'];
-            //$jfs_date = $_POST['jfs_date'];<!--Posted automatically when a reservation is done
-            $jf_amt_paid = $_POST['jf_amt_paid'];
-            $jf_payment_method = $_POST['jf_payment_method'];
-            $jf_payment_refcode = $_POST['jf_payment_refcode'];
-            $jf_payment_number = $_POST['jf_payment_number'];
-
-            //Payment Status
-            $payment_stats = $_POST['payment_stats'];
-            $jfs_id = $_GET['jfs_id'];
-            
-
-
-            //Insert Captured information to a database table
-
-            $query="INSERT INTO jordan_flights_reservation_payments (jf_name, jfs_number, jf_route, jf_number, jf_deptime, jf_arrtime, jp_id, jp_number, jp_name, jp_national_id, jf_flight_fare, jf_amt_paid, jf_payment_method, jf_payment_refcode, jf_payment_number) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-            $query1="UPDATE  jordan_flights_reservation SET  payment_stats =? WHERE jfs_id =? ";
-
-            $stmt = $mysqli->prepare($query);
-            $stmt1 = $mysqli->prepare($query1);
-
-            //bind paramaters
-            $rc=$stmt->bind_param('sssssssssssssss', $jf_name, $jfs_number,  $jf_route, $jf_number, $jf_deptime, $jf_arrtime, $jp_id, $jp_number, $jp_name, $jp_national_id, $jf_flight_fare, $jf_amt_paid, $jf_payment_method, $jf_payment_refcode, $jf_payment_number);
-            $rc=$stmt1->bind_param('si', $payment_stats, $jfs_id);
-
-            $stmt->execute();
-            $stmt1->execute();
-
-            //declare a varible which will be passed to alert function
-            if($stmt && $stmt1)
-            {
-                $success = "Flight Ticket Paid";
-            }
-            else {
-                $err = "Please Try Again Or Try Later"; 
-            }      
-        }
+  $js_id = $_SESSION['js_id'];
+  //load page using js_id as session holder
+  
 ?>
 
 <!DOCTYPE html>
@@ -74,7 +25,7 @@
             <!-- ./ Side Navigation bar-->
             <?php
                 $jfs_number =  $_GET['jfs_number'];
-                $ret="SELECT * FROM  jordan_flights_reservation WHERE jfs_number = ? " ; 
+                $ret="SELECT * FROM  jordan_flights_reservation WHERE jfs_number = ? " ;
                 $stmt= $mysqli->prepare($ret) ;
                 $stmt->bind_param('s', $jfs_number);
                 $stmt->execute() ;//ok
@@ -82,6 +33,7 @@
                 //$cnt=1;
                 while($row=$res->fetch_object())
                 {
+                    
                 
             ?>
 
@@ -90,21 +42,25 @@
                     <ul>
                         <li><a href="pages_dashboard.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
                         </li>
-                        <li><a href="">/ <i class="fa fa-calendar-check-o" aria-hidden="true"></i> Reservations</a>
+                        <li><a href="">/ <i class="fa fa-money" aria-hidden="true"></i> Finances</a>
                         </li>
-                        <li class="active-bre"><a href="#">Manage</a>
+                        <li class="active-bre"><a href="#">Manage / Generate Ticket</a>
                         </li>
-                        <li class="active-bre"><a href="#">Pay /  <?php echo $row->jfs_number;?></a>
+                        <li class="active-bre"><a href="#"><?php echo $row->jfs_number;?></a>
                         </li>
                     </ul>
                 </div>
                 <div class="sb2-2-3">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div id="PrintTicket" class="col-md-12">
                             <div class="box-inn-sp">
                                 <div class="inn-title">
-                                    <h4>Flight Reservation Form</h4>
-                                    <p>Please Fill All Required Fields</p>
+                                    <img  src="images/logo1.png">
+                                    <a class="dropdown-button drop-down-meta" href="#" data-activates="dr-users"><i class="material-icons">more_vert</i></a>
+                                    <ul id="dr-users" class="dropdown-content">
+                                        <li><a href="javascript:window.print()"><i class="fa fa-print"></i>Print</a>
+                                        </li>
+                                    </ul>
                                 </div>
                                 <div class="tab-inn">
                                     <form method = 'POST' enctype="multipart/form-data">
@@ -173,43 +129,46 @@
                                         </div>
                                         
                                         <hr>  
+                                        <?php
+                                            $jfsp_id = $_GET['jfsp_id'];
+                                            $ret="SELECT * FROM jordan_flights_reservation_payments WHERE jfsp_id  = ?" ;
+                                            $stmt= $mysqli->prepare($ret) ;
+                                            $stmt->bind_param('i', $jfsp_id);
+                                            $stmt->execute() ;//ok
+                                            $res=$stmt->get_result();
+                                            //$cnt=1;
+                                            while($row=$res->fetch_object())
+                                            {
+                                                
+                                            
+                                        ?>
                                         <div>
                                             <div class="input-field col s6">
-                                                <input required name="jf_amt_paid" type="text" id="FlightFare"  class="validate">
+                                                <input required name="jf_amt_paid" readonly value="<?php echo $row->jf_amt_paid;?>"type="text" id="FlightFare"  class="validate">
                                                 <label>Amount Paid</label>
                                             </div>
 
                                             <div class="input-field col s6">
-                                                <select required name="jf_payment_method"   readonly placeholder="" type="text" class="validate">
-                                                    <option>Mpesa</option>
-                                                    <option>Airtel Money</option>
-                                                    <option>Bank Deposit</option>
-                                                    <option>Cash</option>
-                                                </select>
+                                                <input required name="jf_payment_method " readonly value="<?php echo $row->jf_payment_method ;?>"type="text" id="FlightFare"  class="validate">
                                                 <label>Payment Method</label>
                                             </div>
+
 
                                         </div>
                                         <div>
                                             <div class="input-field col s12">
-                                                <input required name="jf_payment_refcode" type="text" id="FlightFare"  class="validate">
-                                                <label>Payment Refrence Codes<small>Enter 10 Digit code if you have paid using either Mpesa or Airtel Money and Slip number if you have used bank deposit</small></label>
+                                                <input required name="jf_payment_refcode" readonly  value="<?php echo $row->jf_payment_refcode;?>" type="text" id="FlightFare"  class="validate">
+                                                <label>Payment Refrence Codes<small>10 Digit code if you have paid using either Mpesa or Airtel Money and Slip number if you have used bank deposit</small></label>
                                             </div>
 
                                             <div class="input-field col s6" style="display:none">
-                                                <?php
-                                                    $length = 6;    
-                                                    $_number =  substr(str_shuffle('0123456789QWERTYUIOPLKJHGFDSAZXCVBNM'),1,$length);
-                                                ?>
-                                                <input  required name="jf_payment_number" value="<?php echo $_number;?>" readonly placeholder="" type="text" class="validate">
+                                                <input  required name="jf_payment_number" value="<?php echo $row->jf_payment_number;?>" readonly placeholder="" type="text" class="validate">
                                                 <label>Payment Number</label>
                                             </div>
 
                                         </div>                                       
                                         <div class="row">
-                                            <div class="input-field col s6">
-                                                <input type="submit" name="PayflightTicket" value="Pay Ticket" class="waves-effect waves-light btn-large">
-                                            </div>
+                                            
                                         </div>
                                     </form>
                                 </div>
@@ -219,7 +178,7 @@
                 </div>
             </div>
 
-            <?php }?>
+            <?php } }?>
         </div>
     </div>
         <!--

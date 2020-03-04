@@ -5,11 +5,11 @@
   check_login();//invoke check login method
   $ja_id = $_SESSION['ja_id'];
   //load page using ja_id as session holder
-  //cancel flight
-  if(isset($_GET['cancelFlightReservation']))
+  //delete Feedback
+  if(isset($_GET['delete_feedback']))
   {
-        $id=intval($_GET['cancelFlightReservation']);
-        $adn="DELETE FROM  jordan_flights_reservation  WHERE jfs_id = ?";
+        $id=intval($_GET['delete_feedback']);
+        $adn="DELETE FROM  jordan_passenger_feedbacks  WHERE jpf_id = ?";
         $stmt= $mysqli->prepare($adn);
         $stmt->bind_param('i',$id);
         $stmt->execute();
@@ -17,7 +17,7 @@
   
           if($stmt)
           {
-            $info = "Flights Reservation Cancelled";
+            $info = "Feedback Deleted";
           }
             else
             {
@@ -44,7 +44,7 @@
                     <ul><!--Breadcrumps-->
                         <li><a href="pages_dashboard.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
                         </li>
-                        <li><a href="">/ <i class="fa fa-calendar-check-o" aria-hidden="true"></i> Reservations</a>
+                        <li><a href="">/ <i class="fa fa-bullhorn" aria-hidden="true"></i> Feedbacks</a>
                         </li>
                         <li class="active-bre"><a href="#">Manage</a>
                         </li>
@@ -55,7 +55,7 @@
                         <div class="col-md-12">
                             <div class="box-inn-sp">
                                 <div class="inn-title">
-                                    <h4>Manage Flights Reservations</h4>
+                                    <h4>Passenger Feedbacks</h4>
                                     <a class="dropdown-button drop-down-meta" href="#" data-activates="dr-users"><i class="material-icons">more_vert</i></a>
                                     <ul id="dr-users" class="dropdown-content">
                                         <li><a href="javascript:window.print()"><i class="fa fa-print"></i>Print</a>
@@ -66,88 +66,52 @@
                                 <div class="tab-inn">
                                     <div class="table-responsive table-desi">
                                         <table class="table table-hover">
-                                        <thead>
+                                            <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>No.</th>
-                                                    <th>Plane Name</th>
-                                                    <th>Flight Route</th>
-                                                    <th>Flight Time</th>
-                                                    <th>Pass Name</th>
-                                                    <th>Flight Fare</th>
-                                                    <th>Flight Date</th>
+                                                    <th>Passenger Name</th>
+                                                    <th>Passenger Feedback</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                    //Get details of all flights
-                                                    $ret="SELECT * FROM  jordan_flights_reservation  ORDER BY RAND() "; 
+                                                    //Get details of all passenger feedbacks
+                                                    $ret="SELECT * FROM  jordan_passenger_feedbacks ORDER BY RAND() "; 
                                                     $stmt= $mysqli->prepare($ret) ;
                                                     $stmt->execute() ;//ok
                                                     $res=$stmt->get_result();
                                                     $cnt=1;
                                                     while($row=$res->fetch_object())
                                                     {
-                                                      /* Trim date from default timestamp to
-                                                        *  User Uderstandable Formart  DD-MM-YYYY : 
-                                                        */
-                                                        $dateReservationMade = $row->jfs_date;
+                                                        
                                                 ?>
-
                                                     <tr>
-
                                                         <td><?php echo $cnt;?></td>
-                                                        <td><?php echo $row->jfs_number;?></td>
-                                                        <td><?php echo $row->jf_name;?></td>
-                                                        <td><?php echo $row->jf_route;?></td>
-                                                        <td><?php echo $row->jf_deptime;?> - <?php echo $row->jf_arrtime;?></td>
                                                         <td><?php echo $row->jp_name;?></td>
-                                                        <td><?php echo $row->jf_flight_fare;?></td>
-                                                        <td><?php echo date("d-M-Y ", strtotime($dateReservationMade));?> </td>
-
-
+                                                        <td><?php echo $row->jpf_feedback;?></td>
                                                         <td>
-                                                            <?php 
-                                                                if($row->payment_stats != 'Paid')
-                                                                {
-                                                                    echo 
-                                                                    "  
-                                                                        <a  href='pages_pay_flightreservation.php?jfs_number=$row->jfs_number&jp_id=$row->jp_id&jp_number=$row->jp_number&jfs_id=$row->jfs_id'>
-                                                                            <span class='label label-success'>
-                                                                                Pay
-                                                                            </span>                                                                  
-                                                                        </a>
-                                                                    ";
-                                                                }
-
-                                                                else
-                                                                {
-                                                                    echo
-                                                                    "
-                                                                        <span class='label label-primary'>
-                                                                             Already Paid
-                                                                        </span> 
-                                                                    ";
-                                                                }
-                                                                
-                                                                ?>
-                                                            <br>                                                            
-                                                            <a  href="pages_manage_reservations.php?cancelFlightReservation=<?php echo $row->jfs_id;?>">
-                                                                <span class="label label-danger">
-                                                                     Cancel
-                                                                </span>                                                                  
-                                                            </a>     
+                                                            <span class="label label-primary">
+                                                                <?php echo $row->jpf_feedback;?>
+                                                            </span>    
                                                         </td>
                                                         
-                                                
-                                                    </tr>
+                                                        <td>
+                                                                                                                     
+                                                            <a  href="pages_manage_feedbacks.php?delete_feedback=<?php echo $row->jpf_id;?>">
+                                                                <span class="label label-danger">
+                                                                     Delete  
+                                                                </span>                                                                  
+                                                            </a>    
+
+                                                        </td>
+                                                        
+                                                    </tr> 
                                                 <?php //increment count by 1
                                                     $cnt = $cnt+1;
-                                                }
-                                                ?>    
-                                                
+                                                 }?>
                                             </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

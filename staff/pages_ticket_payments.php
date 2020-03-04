@@ -3,21 +3,30 @@
   include('_partials/config.php');//load config 
   include('_partials/checklogin.php'); //load checklogin 
   check_login();//invoke check login method
-  $ja_id = $_SESSION['ja_id'];
-  //load page using ja_id as session holder
-  //cancel flight
-  if(isset($_GET['cancelFlightReservation']))
+  $js_id = $_SESSION['js_id'];
+  //load page using js_id as session holder
+
+  //delete payment record
+  if(isset($_GET['deletePayment']))
   {
-        $id=intval($_GET['cancelFlightReservation']);
-        $adn="DELETE FROM  jordan_flights_reservation  WHERE jfs_id = ?";
+        $id=intval($_GET['deletePayment']);
+        $jfs_number = $_GET['jfs_number'];
+        $payment_stats= $_GET['payment_stats'];
+        $adn="DELETE FROM  jordan_flights_reservation_payments  WHERE jfsp_id = ?";
+        $query="UPDATE jordan_flights_reservation SET payment_stats = ? WHERE jfs_number =?";
         $stmt= $mysqli->prepare($adn);
+        $stmt1 = $mysqli->prepare($query);
         $stmt->bind_param('i',$id);
+        $stmt1->bind_param('ss', $payment_stats, $jfs_number);
         $stmt->execute();
+        $stmt1->execute();
+
         $stmt->close();	 
+        $stmt1->close();
   
-          if($stmt)
+          if($stmt && $stmt1)
           {
-            $info = "Flights Reservation Cancelled";
+            $info = "Flights Payment Records Deleted";
           }
             else
             {
@@ -42,9 +51,9 @@
             <div class="sb2-2">
                 <div class="sb2-2-2">
                     <ul><!--Breadcrumps-->
-                        <li><a href="pages_dashboard.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+                        <li><a href="pages_dashboard.php"><i class="fa fa-home" aria-hidden="true"></i> Finances</a>
                         </li>
-                        <li><a href="">/ <i class="fa fa-calendar-check-o" aria-hidden="true"></i> Reservations</a>
+                        <li><a href="">/ <i class="fa fa-money" aria-hidden="true"></i> Tickets</a>
                         </li>
                         <li class="active-bre"><a href="#">Manage</a>
                         </li>
@@ -55,7 +64,7 @@
                         <div class="col-md-12">
                             <div class="box-inn-sp">
                                 <div class="inn-title">
-                                    <h4>Manage Flights Reservations</h4>
+                                    <h4>Manage Flights Reservations Payments</h4>
                                     <a class="dropdown-button drop-down-meta" href="#" data-activates="dr-users"><i class="material-icons">more_vert</i></a>
                                     <ul id="dr-users" class="dropdown-content">
                                         <li><a href="javascript:window.print()"><i class="fa fa-print"></i>Print</a>
@@ -63,6 +72,7 @@
                                     </ul>
 
                                 </div>
+                                
                                 <div class="tab-inn">
                                     <div class="table-responsive table-desi">
                                         <table class="table table-hover">
@@ -75,14 +85,15 @@
                                                     <th>Flight Time</th>
                                                     <th>Pass Name</th>
                                                     <th>Flight Fare</th>
-                                                    <th>Flight Date</th>
+                                                    <th>Payment Method</th>
+                                                    <th>Payment Code</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
                                                     //Get details of all flights
-                                                    $ret="SELECT * FROM  jordan_flights_reservation  ORDER BY RAND() "; 
+                                                    $ret="SELECT * FROM  jordan_flights_reservation_payments  ORDER BY RAND() "; 
                                                     $stmt= $mysqli->prepare($ret) ;
                                                     $stmt->execute() ;//ok
                                                     $res=$stmt->get_result();
@@ -92,7 +103,7 @@
                                                       /* Trim date from default timestamp to
                                                         *  User Uderstandable Formart  DD-MM-YYYY : 
                                                         */
-                                                        $dateReservationMade = $row->jfs_date;
+                                                        //$dateReservationMade = $row->jfs_date;
                                                 ?>
 
                                                     <tr>
@@ -100,42 +111,24 @@
                                                         <td><?php echo $cnt;?></td>
                                                         <td><?php echo $row->jfs_number;?></td>
                                                         <td><?php echo $row->jf_name;?></td>
-                                                        <td><?php echo $row->jf_route;?></td>
+                                                        <td><?php echo $row->jf_route?></td>
                                                         <td><?php echo $row->jf_deptime;?> - <?php echo $row->jf_arrtime;?></td>
                                                         <td><?php echo $row->jp_name;?></td>
                                                         <td><?php echo $row->jf_flight_fare;?></td>
-                                                        <td><?php echo date("d-M-Y ", strtotime($dateReservationMade));?> </td>
+                                                        <td><?php echo $row->jf_payment_method;?></td>
+                                                        <td><?php echo $row->jf_payment_refcode;?></td>
 
 
                                                         <td>
-                                                            <?php 
-                                                                if($row->payment_stats != 'Paid')
-                                                                {
-                                                                    echo 
-                                                                    "  
-                                                                        <a  href='pages_pay_flightreservation.php?jfs_number=$row->jfs_number&jp_id=$row->jp_id&jp_number=$row->jp_number&jfs_id=$row->jfs_id'>
-                                                                            <span class='label label-success'>
-                                                                                Pay
-                                                                            </span>                                                                  
-                                                                        </a>
-                                                                    ";
-                                                                }
-
-                                                                else
-                                                                {
-                                                                    echo
-                                                                    "
-                                                                        <span class='label label-primary'>
-                                                                             Already Paid
-                                                                        </span> 
-                                                                    ";
-                                                                }
-                                                                
-                                                                ?>
+                                                            <a  href='pages_get_flight_ticket.php?jfs_number=<?php echo $row->jfs_number;?>&jfsp_id=<?php echo $row->jfsp_id;?>&jp_number=<?php echo $row->jp_number;?>'>
+                                                                <span class='label label-success'>
+                                                                    Get Ticket
+                                                                </span>                                                                  
+                                                            </a>
                                                             <br>                                                            
-                                                            <a  href="pages_manage_reservations.php?cancelFlightReservation=<?php echo $row->jfs_id;?>">
+                                                            <a  href="pages_ticket_payments.php?deletePayment=<?php echo $row->jfsp_id;?>&jfs_number=<?php echo $row->jfs_number;?>&payment_stats=Pending">
                                                                 <span class="label label-danger">
-                                                                     Cancel
+                                                                     Delete Payment
                                                                 </span>                                                                  
                                                             </a>     
                                                         </td>
