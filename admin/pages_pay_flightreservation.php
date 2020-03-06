@@ -142,7 +142,7 @@
                                             
                                             <div class="input-field col s6">
                                                 <input value="<?php echo $row->jf_number;?>" required name="jf_number"   type="text"  class="validate">
-                                                <label>Flight Route Number</label>
+                                                <label>Flight Number</label>
                                             </div>
 
                                             <div class="input-field col s6">
