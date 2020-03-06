@@ -37,6 +37,7 @@
 	<!DOCTYPE html>
 		<html lang="en">
 			<?php include("_partials/head.php");?>
+            
 			<body>
 				<!-- Preloader -->
 				<div id="preloader">
@@ -137,59 +138,89 @@
 							</div>
 						</div>
 						<!--CENTER SECTION-->
-						<div class="db-2">
-                            <div class="db-2-com db-2-main">
-                                <h4>Dashboard / Flight Reservations</h4>
-                                <div class="db-2-main-com db-2-main-com-table">
-                                    <table class="responsive-table">
-                                        <thead>
-											<tr>
-												<th>#</th>
-												<th>Plane Name</th>
-												<th>Plane Number</th>
-												<th>Flight Route</th>
-												<th>Flight Fare</th>
-												<th>Action</th>
-                                            </tr>
-                                        </thead>
+                        <?php
+                            //Get details of all reserved flights
+                            $jfs_number = $_GET['jfs_number'];
+                            $ret="SELECT * FROM  jordan_flights_reservation_payments WHERE jfs_number = ?"; 
+                            $stmt= $mysqli->prepare($ret) ;
+                            $stmt->bind_param('s', $jfs_number);
+                            $stmt->execute() ;//ok
+                            $res=$stmt->get_result();
+                            $cnt=1;
+                            while($row=$res->fetch_object())
+                            {
+                                //Date paid and trim timestamp to DD-MM-YYYY
+                                $datePaid = $row->jfs_date_paid;
+                        ?>
+						<div  class=" db-2">
+                            <div class="db-2-com db-2-main ">
+                                <h4>Dashboard /  Tickets</h4>
+                                <div   class="db-2-main-com db-2-main-com-table">
+                                    <table id="Print_Ticket" class=" ticket responsive-table">
                                         <tbody>
-											<?php
-												//Get details of all flights
-												$ret="SELECT * FROM  jordan_flights ORDER BY RAND() "; 
-												$stmt= $mysqli->prepare($ret) ;
-												$stmt->execute() ;//ok
-												$res=$stmt->get_result();
-												$cnt=1;
-												while($row=$res->fetch_object())
-												{
-													
-											?>
-
-												<tr>
-
-													<td><?php echo $cnt;?></td>
-													<td><?php echo $row->jf_name;?></td>
-													<td><?php echo $row->jf_number;?></td>
-													<td><?php echo $row->jf_flight_route;?></td>
-													<td><?php echo $row->jf_flight_ticket_fare;?></td>
-													<td>
-                                                        <a href="pages_reserve_flight.php?flight_number=<?php echo $row->jf_number;?>">
-                                                            <span class="db-done">
-                                                                Book this Flight
-                                                            </span>  
-                                                        </a>      
-                                                    </td>
-												</tr>
-											<?php //increment count by 1
-												$cnt = $cnt+1;
-											}
-											?>    
-                                                
+                                            <tr>
+                                                <td>Ticket Number</td>
+                                                <td>:</td>
+                                                <td><?php echo $row->jfs_number;?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Flight Number</td>
+                                                <td>:</td>
+                                                <td><?php echo $row->jf_number;?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Flight Route</td>
+                                                <td>:</td>
+                                                <td><?php echo $row->jf_route;?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Departure Time</td>
+                                                <td>:</td>
+                                                <td><?php echo $row->jf_deptime;?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Passenger Name</td>
+                                                <td>:</td>
+                                                <td><?php echo $row->jp_name;?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Flight Fare</td>
+                                                <td>:</td>
+                                                <td><?php echo $row->jf_flight_fare;?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Date Paid</td>
+                                                <td>:</td>
+                                                <td>
+                                                    <span class="db-done">
+                                                        <?php echo date("d-M-Y ", strtotime($datePaid));?> 
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Payment Method</td>
+                                                <td>:</td>
+                                                <td><?php echo $row->jf_payment_method;?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Payment Ref Code</td>
+                                                <td>:</td>
+                                                <td><?php echo $row->jf_payment_refcode;?></td>
+                                            </tr>
+                                            
                                         </tbody>
                                     </table>
+                                    <div class="db-mak-pay-bot">
+                                        <button id="print" class="waves-effect waves-light btn-large btn-success" onclick="printContent('Print_Ticket');" >Print</button>
+                                    </div>
                                 </div>
+                            
                             </div>
+                            
                         </div>
+                        
+                        
+                        <?php }?>
 						
 						<!--RIGHT SECTION-->
 						<?php include("_partials/notifications.php");?>
@@ -217,6 +248,15 @@
 				<script src="js/wow.min.js"></script>
 				<script src="js/materialize.min.js"></script>
 				<script src="js/custom.js"></script>
+                <script>
+                    function printContent(el){
+                    var restorepage = $('body').html();
+                    var printcontent = $('#' + el).clone();
+                    $('body').empty().html(printcontent);
+                    window.print();
+                    $('body').html(restorepage);
+                    }
+                </script>
 			</body>
 	</html>
 <?php }?>
