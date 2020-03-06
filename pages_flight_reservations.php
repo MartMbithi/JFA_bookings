@@ -13,6 +13,9 @@
     //$cnt=1;
     while($row=$res->fetch_object())
     {
+        //TRIM TIMESTAMP TO DD-MM-YYYY FORMART
+         $date_joined =  $row->jp_date_joined;
+
 		//load a default profile picture if logged in user havent uploaded a picture
 		if($row->passport_pic  == '')
 			{
@@ -53,7 +56,7 @@
 									</div>
 									<div class="main-menu">
 										<ul>											
-											<li><a  href="pages_profile.php">Hello <?php echo $row->jp_name;?></a>
+											<li><a  href="pages_passenger_profile.php">Hello <?php echo $row->jp_name;?></a>
 											</li>
 											<li><a href="pages_logout.php">Log Out</a>
 											</li>
@@ -94,41 +97,99 @@
 				<section>
 					<div class="db">
 						<!--LEFT SECTION-->
-						<?php include("_partials/left_section.php");?>
-						<!--CENTER SECTION-->
-						<div class="db-2">
-							<div class="db-2-com db-2-main">
-								<h4>Dashboard</h4>
-								<div class="db-2-main-com">
-									<div class="db-2-main-1">
-										<div class="db-2-main-2"> <img  src="images/icon/a19.png" alt="" /><span>My Flight</span>
-											<ul>
-											
-												<li><a href="pages_view_flights.php">My Booked Flight</a>
-												</li>
-											</ul>
-										</div>
-									</div>
-									
-									<div class="db-2-main-1">
-										<div class="db-2-main-2"> <img src="images/icon/a17.png" alt="" /><span>Reservations</span>
-											<ul>
-												<li><a href="db-hotel-details.html">My Reservation History</a>
-												</li>
-											</ul>
-										</div>
-									</div>
-									<div class="db-2-main-1">
-										<div class="db-2-main-2"> <img src="images/icon/a14.png" alt="" /><span>Flight Tickets</span>
-											<ul>
-												<li><a href="db-event-details.html">My Tickets</a>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
+						<div class="db-l">
+							<div class="db-l-1">
+								<ul>
+									<li>
+										<?php 
+										//display passenger profile picture
+										 echo $passenger_dic;
+										?>
+									</li>
+									<li><span></span><?php echo $row->jp_name;?></li>
+									<li><span></span><?php echo $row->jp_number;?></li>
+								</ul>
+							</div>
+							<div class="db-l-2">
+								<ul>
+									<li>
+										<a href="pages_dashboard.php"><img src="images/icon/dbl6.png" alt="" />My Dashboard</a>
+									</li>
+									<li>
+										<a href="pages_passenger_profile.php"><img src="images/icon/dbl6.png" alt="" /> My Profile</a>
+									</li>
+									<li>
+										<a href="pages_flight_route.php"><img src="images/icon/dbl1.png" alt="" />Flight Routes</a>
+									</li>
+									<li>
+										<a href="pages_view_flights.php"><img src="images/icon/dbl2.png" alt="" /> Flights</a>
+									</li>
+									<li>
+										<a href="pages_flight_reservations.php"><img src="images/icon/dbl3.png" alt="" /> Flight Reservations</a>
+									</li>
+									<li>
+										<a href="pages_reservations_paymanets.php"><img src="images/icon/dbl9.png" alt="" /> Payments</a>
+									</li>
+									<li>
+										<a href="pages_feedbacks.php"><img src="images/icon/dbl7.png" alt="" />Feedbacks</a>
+									</li>
+								</ul>
 							</div>
 						</div>
+						<!--CENTER SECTION-->
+						<div class="db-2">
+                            <div class="db-2-com db-2-main">
+                                <h4>Dashboard / Flight Reservations</h4>
+                                <div class="db-2-main-com db-2-main-com-table">
+                                    <table class="responsive-table">
+                                        <thead>
+											<tr>
+												<th>#</th>
+												<th>Plane Name</th>
+												<th>Plane Number</th>
+												<th>Flight Route</th>
+												<th>Flight Fare</th>
+												<th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+											<?php
+												//Get details of all flights
+												$ret="SELECT * FROM  jordan_flights ORDER BY RAND() "; 
+												$stmt= $mysqli->prepare($ret) ;
+												$stmt->execute() ;//ok
+												$res=$stmt->get_result();
+												$cnt=1;
+												while($row=$res->fetch_object())
+												{
+													
+											?>
+
+												<tr>
+
+													<td><?php echo $cnt;?></td>
+													<td><?php echo $row->jf_name;?></td>
+													<td><?php echo $row->jf_number;?></td>
+													<td><?php echo $row->jf_flight_route;?></td>
+													<td><?php echo $row->jf_flight_ticket_fare;?></td>
+													<td>
+                                                        <a href="pages_reserve_flight.php?flight_number=<?php echo $row->jf_number;?>">
+                                                            <span class="db-done">
+                                                                Book this Flight
+                                                            </span>  
+                                                        </a>      
+                                                    </td>
+												</tr>
+											<?php //increment count by 1
+												$cnt = $cnt+1;
+											}
+											?>    
+                                                
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
 						<!--RIGHT SECTION-->
 						<?php include("_partials/notifications.php");?>
 					</div>
