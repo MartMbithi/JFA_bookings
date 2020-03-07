@@ -173,10 +173,9 @@
 													<td><?php echo $row->jf_flight_route;?></td>
 													<td><?php echo $row->jf_flight_ticket_fare;?></td>
 													<td>
-                                                        <a href="pages_reserve_flight.php?flight_number=<?php echo $row->jf_number;?>">
-                                                            <span class="db-done">
-                                                                Book this Flight
-                                                            </span>  
+                                                        <a  class="label label-success" href="pages_reserve_flight.php?flight_number=<?php echo $row->jf_number;?>">
+                                                            <i class="fa fa-check"></i> <i class="fa fa-plane"></i>
+															    Book this Flight
                                                         </a>      
                                                     </td>
 												</tr>

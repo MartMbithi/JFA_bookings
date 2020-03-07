@@ -2,7 +2,35 @@
 	session_start();
 	include('_partials/config.php');//load config file
 	include('_partials/checklogin.php');//load checklogin 
-	check_login(); //invoke checklogin
+    check_login(); //invoke checklogin
+    //book a flight
+    if(isset($_POST['feedback']))
+        {
+            //give feedback
+            $jp_id = $_SESSION['jp_id'];
+            $jp_name = $_POST['jp_name'];
+            $jpf_feedback  = $_POST['jpf_feedback '];
+            
+            //$jfs_date = $_POST['jfs_date'];<!--Posted automatically when a reservation is done
+
+
+            //Insert Captured information to a database table
+
+            $query="INSERT INTO jordan_passenger_feedbacks (jp_id, jp_name, jpf_feedback) VALUES (?,?,?)";
+            $stmt = $mysqli->prepare($query);
+            //bind paramaters
+            $rc=$stmt->bind_param('sss', $jp_id, $jp_name,  $jpf_feedback);
+            $stmt->execute();
+
+            //declare a varible which will be passed to alert function
+            if($stmt)
+            {
+                $success = "Feedback Submitted";
+            }
+            else {
+                $err = "Please Try Again Or Try Later"; 
+            }      
+        }
 
     $jp_id = $_SESSION['jp_id'];//load the dashboard page using passenger id
     $ret="SELECT  * FROM  jordan_passengers  WHERE jp_id=?";
@@ -136,84 +164,47 @@
 								</ul>
 							</div>
 						</div>
-						<!--CENTER SECTION-->
-						<div class="db-2">
-                            <div class="db-2-com db-2-main">
-                                <h4>Dashboard / Flight Reservations Pending Payments</h4>
-                                <div class="db-2-main-com db-2-main-com-table">
-                                    <table class="responsive-table">
-                                        <thead>
-											<tr>
-												<th>#</th>
-												<th>Res Number</th>
-												<th>Flight Name</th>
-												<th>Dep Time</th>
-												<th>ArrTime</th>
-                                                <th>Route</th>
-                                                <th>Fare</th>
-												<th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-											<?php
-                                                //Get details of all reserved flights
-                                                $jp_id = $_SESSION['jp_id'];
-												$ret="SELECT * FROM  jordan_flights_reservation WHERE jp_id = ? AND payment_stats != 'Paid'"; 
-                                                $stmt= $mysqli->prepare($ret) ;
-                                                $stmt->bind_param('i', $jp_id);
-												$stmt->execute() ;//ok
-												$res=$stmt->get_result();
-												$cnt=1;
-												while($row=$res->fetch_object())
-												{
-													
-											?>
-
-												<tr>
-
-													<td><?php echo $cnt;?></td>
-													<td><?php echo $row->jfs_number;?></td>
-													<td><?php echo $row->jf_name;?></td>
-													<td><?php echo $row->jf_deptime;?></td>
-													<td><?php echo $row->jf_arrtime;?></td>
-                                                    <td><?php echo $row->jf_route;?></td>
-                                                    <td><?php echo $row->jf_flight_fare;?></td>
-													<td>
-                                                    <?php 
-                                                        if($row->payment_stats != 'Paid')
-                                                        {
-                                                            echo 
-                                                            "  
-                                                                <a class='label label-danger'  href='pages_pay_flight_reservationt.php?jfs_id=$row->jfs_id'>
-																	<i class='fa fa-check'></i>
-																		<i class='fa fa-money'></i>
-                                                                        Pay
-                                                                                                                                     
-                                                                </a>
-                                                            ";
-                                                        }
-
-                                                        else
-                                                        {
-                                                            echo
-                                                            "
-                                                                <a href='pages_get_ticket.php?jfs_number=$row->jfs_number' class='db-done'>Ticket</a>
-                                                            ";
-                                                        }
-                                                    ?> 
-                                                    </td>
-												</tr>
-											<?php //increment count by 1
-												$cnt = $cnt+1;
-											}
-											?>    
+						<!--CENTER SECTION WITH FLIGHT DETAILS-->
+                        
+                            <div class="db-2">
+                                <div class="db-2-com db-2-main">
+                                    <h4>Dashboard / Feedbacks</h4>
+                                    <div class="db-2-main-com db2-form-pay db2-form-com">
+                                        <form method="post" class="col s12">
+                                        <?php
+                                            $jp_id = $_SESSION['jp_id'];//load the dashboard page using passenger id
+                                            $ret="SELECT  * FROM  jordan_passengers  WHERE jp_id=?";
+                                            $stmt= $mysqli->prepare($ret) ;
+                                            $stmt->bind_param('i', $jp_id);
+                                            $stmt->execute() ;//ok
+                                            $res=$stmt->get_result();
+                                            //$cnt=1;
+                                            while($row=$res->fetch_object())
+                                            {
+                                                ?>
+                                            <div class="row">
+                                                <div class="input-field col s12">
+                                                    <input type="text" readonly name="jp_name" value="<?php echo $row->jp_name;?>" class="validate">
+                                                    <label>Passenger Name</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="input-field col s12 m6">
+                                                    <textarea type="text" name="jpf_feedback" class="validate"></textarea>
+                                                    <label>Feed Back</label>
+                                                </div>
                                                 
-                                        </tbody>
-                                    </table>
+                                            </div>
+                                            <div class="row">
+                                                <div class="input-field col s12">
+                                                    <input type="submit" value="Give Feedback" name="feedback" class="waves-effect waves-light btn-large btn-success"> </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-						
+                        <?php }?>
+                        
 						<!--RIGHT SECTION-->
 						<?php include("_partials/notifications.php");?>
 					</div>

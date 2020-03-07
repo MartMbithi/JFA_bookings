@@ -139,7 +139,7 @@
 						<!--CENTER SECTION-->
 						<div class="db-2">
                             <div class="db-2-com db-2-main">
-                                <h4>Dashboard / Flight Reservations Pending Payments</h4>
+                                <h4>Dashboard / Tickets</h4>
                                 <div class="db-2-main-com db-2-main-com-table">
                                     <table class="responsive-table">
                                         <thead>
@@ -158,7 +158,7 @@
 											<?php
                                                 //Get details of all reserved flights
                                                 $jp_id = $_SESSION['jp_id'];
-												$ret="SELECT * FROM  jordan_flights_reservation WHERE jp_id = ? AND payment_stats != 'Paid'"; 
+												$ret="SELECT * FROM  jordan_flights_reservation WHERE jp_id = ? AND payment_stats= 'Paid' "; 
                                                 $stmt= $mysqli->prepare($ret) ;
                                                 $stmt->bind_param('i', $jp_id);
 												$stmt->execute() ;//ok
@@ -179,29 +179,12 @@
                                                     <td><?php echo $row->jf_route;?></td>
                                                     <td><?php echo $row->jf_flight_fare;?></td>
 													<td>
-                                                    <?php 
-                                                        if($row->payment_stats != 'Paid')
-                                                        {
-                                                            echo 
-                                                            "  
-                                                                <a class='label label-danger'  href='pages_pay_flight_reservationt.php?jfs_id=$row->jfs_id'>
-																	<i class='fa fa-check'></i>
-																		<i class='fa fa-money'></i>
-                                                                        Pay
-                                                                                                                                     
-                                                                </a>
-                                                            ";
-                                                        }
-
-                                                        else
-                                                        {
-                                                            echo
-                                                            "
-                                                                <a href='pages_get_ticket.php?jfs_number=$row->jfs_number' class='db-done'>Ticket</a>
-                                                            ";
-                                                        }
-                                                    ?> 
-                                                    </td>
+														<a href='pages_get_ticket.php?jfs_number=<?php echo $row->jfs_number;?>' class='label label-success'>
+															<i class='fa fa-print'></i>
+																<i class="fa fa-ticket"></i>
+															Generate Ticket
+														</a>
+													</td>
 												</tr>
 											<?php //increment count by 1
 												$cnt = $cnt+1;

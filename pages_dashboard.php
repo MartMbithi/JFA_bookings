@@ -104,7 +104,7 @@
 										<div class="db-2-main-2"> <img  src="images/icon/a19.png" alt="" /><span>My Flight</span>
 											<ul>
 											
-												<li><a href="pages_view_flights.php">My Booked Flight</a>
+												<li><a href="pages_booked_flight.php">My Booked Flight</a>
 												</li>
 											</ul>
 										</div>
@@ -113,7 +113,7 @@
 									<div class="db-2-main-1">
 										<div class="db-2-main-2"> <img src="images/icon/a17.png" alt="" /><span>Reservations</span>
 											<ul>
-												<li><a href="db-hotel-details.html">My Reservation History</a>
+												<li><a href="pages_my_reservations.php">My Reservation History</a>
 												</li>
 											</ul>
 										</div>
@@ -121,7 +121,7 @@
 									<div class="db-2-main-1">
 										<div class="db-2-main-2"> <img src="images/icon/a14.png" alt="" /><span>Flight Tickets</span>
 											<ul>
-												<li><a href="db-event-details.html">My Tickets</a>
+												<li><a href="pages_get_tickets.php">My Tickets</a>
 												</li>
 											</ul>
 										</div>

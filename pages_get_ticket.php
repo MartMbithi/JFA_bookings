@@ -211,7 +211,7 @@
                                         </tbody>
                                     </table>
                                     <div class="db-mak-pay-bot">
-                                        <button id="print" class="waves-effect waves-light btn-large btn-success" onclick="printContent('Print_Ticket');" >Print</button>
+                                        <button id="print"  class="waves-effect waves-light btn-large btn-success" onclick="printContent('Print_Ticket');" ><i class="fa fa-print"></i> Print</button>
                                     </div>
                                 </div>
                             

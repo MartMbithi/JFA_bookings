@@ -139,26 +139,23 @@
 						<!--CENTER SECTION-->
 						<div class="db-2">
                             <div class="db-2-com db-2-main">
-                                <h4>Dashboard / Flight Reservations Pending Payments</h4>
+                                <h4>Dashboard /My Flight</h4>
                                 <div class="db-2-main-com db-2-main-com-table">
                                     <table class="responsive-table">
                                         <thead>
 											<tr>
 												<th>#</th>
-												<th>Res Number</th>
-												<th>Flight Name</th>
-												<th>Dep Time</th>
-												<th>ArrTime</th>
-                                                <th>Route</th>
-                                                <th>Fare</th>
-												<th>Action</th>
+												<th>Plane Name</th>
+												<th>Plane Number</th>
+												<th>Flight Route</th>
+												<th>Flight Fare</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-											<?php
-                                                //Get details of all reserved flights
+                                            <?php
+                                                //Get details of my plane
                                                 $jp_id = $_SESSION['jp_id'];
-												$ret="SELECT * FROM  jordan_flights_reservation WHERE jp_id = ? AND payment_stats != 'Paid'"; 
+												$ret="SELECT * FROM  jordan_flights_reservation WHERE jp_id = ?"; 
                                                 $stmt= $mysqli->prepare($ret) ;
                                                 $stmt->bind_param('i', $jp_id);
 												$stmt->execute() ;//ok
@@ -166,42 +163,20 @@
 												$cnt=1;
 												while($row=$res->fetch_object())
 												{
+                                                    //Trim timestamp to dd-mm-yyyy
+                                                    $date_booked =  $row->jfs_date;
+
 													
 											?>
 
 												<tr>
 
 													<td><?php echo $cnt;?></td>
-													<td><?php echo $row->jfs_number;?></td>
 													<td><?php echo $row->jf_name;?></td>
-													<td><?php echo $row->jf_deptime;?></td>
-													<td><?php echo $row->jf_arrtime;?></td>
-                                                    <td><?php echo $row->jf_route;?></td>
-                                                    <td><?php echo $row->jf_flight_fare;?></td>
-													<td>
-                                                    <?php 
-                                                        if($row->payment_stats != 'Paid')
-                                                        {
-                                                            echo 
-                                                            "  
-                                                                <a class='label label-danger'  href='pages_pay_flight_reservationt.php?jfs_id=$row->jfs_id'>
-																	<i class='fa fa-check'></i>
-																		<i class='fa fa-money'></i>
-                                                                        Pay
-                                                                                                                                     
-                                                                </a>
-                                                            ";
-                                                        }
-
-                                                        else
-                                                        {
-                                                            echo
-                                                            "
-                                                                <a href='pages_get_ticket.php?jfs_number=$row->jfs_number' class='db-done'>Ticket</a>
-                                                            ";
-                                                        }
-                                                    ?> 
-                                                    </td>
+													<td><?php echo $row->jf_number;?></td>
+													<td><?php echo $row->jf_route;?></td>
+													<td><?php echo $row->jf_flight_fare;?></td>
+													
 												</tr>
 											<?php //increment count by 1
 												$cnt = $cnt+1;
@@ -213,7 +188,6 @@
                                 </div>
                             </div>
                         </div>
-						
 						<!--RIGHT SECTION-->
 						<?php include("_partials/notifications.php");?>
 					</div>

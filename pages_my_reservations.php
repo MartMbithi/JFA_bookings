@@ -3,6 +3,27 @@
 	include('_partials/config.php');//load config file
 	include('_partials/checklogin.php');//load checklogin 
 	check_login(); //invoke checklogin
+	//Cancel Reservation
+
+	if(isset($_GET['cancelFlightReservation']))
+  {
+        $id=intval($_GET['cancelFlightReservation']);
+        $adn="DELETE FROM  jordan_flights_reservation  WHERE jfs_id = ?";
+        $stmt= $mysqli->prepare($adn);
+        $stmt->bind_param('i',$id);
+        $stmt->execute();
+        $stmt->close();	 
+  
+          if($stmt)
+          {
+            $info = "Flights Reservation Cancelled";
+          }
+            else
+            {
+                $err = "Try Again Later";
+            }
+    }
+
 
     $jp_id = $_SESSION['jp_id'];//load the dashboard page using passenger id
     $ret="SELECT  * FROM  jordan_passengers  WHERE jp_id=?";
@@ -139,7 +160,7 @@
 						<!--CENTER SECTION-->
 						<div class="db-2">
                             <div class="db-2-com db-2-main">
-                                <h4>Dashboard / Flight Reservations Pending Payments</h4>
+                                <h4>Dashboard / Reservations</h4>
                                 <div class="db-2-main-com db-2-main-com-table">
                                     <table class="responsive-table">
                                         <thead>
@@ -151,14 +172,15 @@
 												<th>ArrTime</th>
                                                 <th>Route</th>
                                                 <th>Fare</th>
-												<th>Action</th>
+                                                <th>Date Booked</th>
+                                                <th>Cancel</th>
                                             </tr>
                                         </thead>
                                         <tbody>
 											<?php
                                                 //Get details of all reserved flights
                                                 $jp_id = $_SESSION['jp_id'];
-												$ret="SELECT * FROM  jordan_flights_reservation WHERE jp_id = ? AND payment_stats != 'Paid'"; 
+												$ret="SELECT * FROM  jordan_flights_reservation WHERE jp_id = ?"; 
                                                 $stmt= $mysqli->prepare($ret) ;
                                                 $stmt->bind_param('i', $jp_id);
 												$stmt->execute() ;//ok
@@ -166,11 +188,13 @@
 												$cnt=1;
 												while($row=$res->fetch_object())
 												{
+                                                    //Trim timestamp to dd-mm-yyyy
+                                                    $date_booked =  $row->jfs_date;
+
 													
 											?>
 
 												<tr>
-
 													<td><?php echo $cnt;?></td>
 													<td><?php echo $row->jfs_number;?></td>
 													<td><?php echo $row->jf_name;?></td>
@@ -178,29 +202,9 @@
 													<td><?php echo $row->jf_arrtime;?></td>
                                                     <td><?php echo $row->jf_route;?></td>
                                                     <td><?php echo $row->jf_flight_fare;?></td>
-													<td>
-                                                    <?php 
-                                                        if($row->payment_stats != 'Paid')
-                                                        {
-                                                            echo 
-                                                            "  
-                                                                <a class='label label-danger'  href='pages_pay_flight_reservationt.php?jfs_id=$row->jfs_id'>
-																	<i class='fa fa-check'></i>
-																		<i class='fa fa-money'></i>
-                                                                        Pay
-                                                                                                                                     
-                                                                </a>
-                                                            ";
-                                                        }
-
-                                                        else
-                                                        {
-                                                            echo
-                                                            "
-                                                                <a href='pages_get_ticket.php?jfs_number=$row->jfs_number' class='db-done'>Ticket</a>
-                                                            ";
-                                                        }
-                                                    ?> 
+													<td><?php echo date("d-M-Y ", strtotime($date_booked));?></td>
+                                                    <td>
+                                                        <a class="badge badge-danger" href="pages_my_reservations.php?cancelFlightReservation=<?php echo $row->jfs_id;?>"><i class="fa fa-times"></i>Cancel</a>                                                    
                                                     </td>
 												</tr>
 											<?php //increment count by 1
