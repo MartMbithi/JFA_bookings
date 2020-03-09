@@ -9,7 +9,7 @@
             //give feedback
             $jp_id = $_SESSION['jp_id'];
             $jp_name = $_POST['jp_name'];
-            $jpf_feedback  = $_POST['jpf_feedback '];
+            $jpf_feedback  = $_POST['jpf_feedback'];
             
             //$jfs_date = $_POST['jfs_date'];<!--Posted automatically when a reservation is done
 
@@ -101,7 +101,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="search-form">
-									<form class="tourz-search-form">
+									<form  action="pages_view_flights.php" class="tourz-search-form">
 										<div class="input-field">
 											
 										</div>
@@ -190,7 +190,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="input-field col s12 m6">
-                                                    <textarea type="text" name="jpf_feedback" class="validate"></textarea>
+                                                    <textarea type="text" id="feedback" name="jpf_feedback" row="5"></textarea>
                                                     <label>Feed Back</label>
                                                 </div>
                                                 
@@ -231,6 +231,11 @@
 				<script src="js/wow.min.js"></script>
 				<script src="js/materialize.min.js"></script>
 				<script src="js/custom.js"></script>
+				<!--Load CK EDITOR JS-->
+				<script src="//cdn.ckeditor.com/4.13.1/full/ckeditor.js"></script>
+					<script type="text/javascript">
+					CKEDITOR.replace('feedback')
+				</script>
 			</body>
 	</html>
 <?php }?>

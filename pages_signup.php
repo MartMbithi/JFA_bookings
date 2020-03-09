@@ -57,10 +57,13 @@
 							<input type="text" required name="jp_name" class="validate">
 							<label>Full Name</label>
 						</div>
+
                         <div class="input-field col s6">
 							<input type="text" required name="jp_national_id" class="validate">
 							<label>National ID Number</label>
 						</div>
+                    </div>
+                    <div class="row">    
                         <div class="input-field col s6">
 							<input type="text" required name="jp_phone" class="validate">
 							<label>Phone Number</label>

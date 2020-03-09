@@ -89,13 +89,7 @@
                                                     <tr>
                                                         <td><?php echo $cnt;?></td>
                                                         <td><?php echo $row->jp_name;?></td>
-                                                        <td><?php echo $row->jpf_feedback;?></td>
-                                                        <td>
-                                                            <span class="label label-primary">
-                                                                <?php echo $row->jpf_feedback;?>
-                                                            </span>    
-                                                        </td>
-                                                        
+                                                        <td><?php echo $row->jpf_feedback;?></td>                                                        
                                                         <td>
                                                                                                                      
                                                             <a  href="pages_manage_feedbacks.php?delete_feedback=<?php echo $row->jpf_id;?>">

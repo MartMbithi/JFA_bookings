@@ -124,7 +124,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="search-form">
-									<form class="tourz-search-form">
+									<form  action="pages_view_flights.php" class="tourz-search-form">
 										<div class="input-field">
 											
 										</div>
@@ -285,7 +285,7 @@
                                                     <label for="pay-ca">Flight Fare</label>
                                                 </div>
                                                 <div class="input-field col s6">
-                                                    <input id="pay-ca" name="jf_amt_paid"  type="text" class="validate">
+                                                    <input id="pay-ca" name="jf_amt_paid" required  type="text" class="validate">
                                                     <label for="pay-ca">Amount Paid</label>
                                                 </div>
                                             </div>

@@ -73,7 +73,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="search-form">
-									<form class="tourz-search-form">
+									<form action="pages_view_flights.php" class="tourz-search-form">
 										<div class="input-field">
 											
 										</div>
@@ -182,6 +182,8 @@
                                     </table>
                                     <div class="db-mak-pay-bot">
                                     	<a href="pages_profile_edit.php" class="waves-effect waves-light btn-large btn-success">Update My Profile</a>
+
+										<a href="pages_profilepic_edit.php" class="waves-effect waves-light btn-large btn-success">Change Profile Picture</a>
 
 										<a href="pages_change_pwd.php" class="waves-effect waves-light btn-large btn-danger">Change Password</a>
 

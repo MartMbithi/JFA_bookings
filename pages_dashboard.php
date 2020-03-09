@@ -21,6 +21,15 @@
 							<img src='images/place3.jpg' alt='$row->jp_number' />
 						";
 			}
+				elseif($row->passport_pic == 'Array')
+				{
+
+			$passenger_dic = 
+						"
+							<img src='images/place3.jpg' alt='$row->jp_number' />
+						";
+				}
+
 			else
 			{
 				$passenger_dic =  	
@@ -70,7 +79,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="search-form">
-									<form class="tourz-search-form">
+									<form action="pages_view_flights.php" class="tourz-search-form">
 										<div class="input-field">
 											
 										</div>

@@ -58,7 +58,7 @@
 							<input type="submit" name="pass_login" value="Log In" class="waves-effect waves-light btn-large"> </div>
 					</div>
 				</form>
-				<p><a href="pages_reset_pwd.php">Forgot Password</a> | <a href="pages_signup.php">Register Account</a>
+				<p><a href="pages_reset_pwd.php">Forgot Password</a> | <a href="pages_signup.php">Register Account</a> | <a href="index.php">Home</a>
 				</p>
 				<div class="soc-login">
 					<h4>Sign in using</h4>

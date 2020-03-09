@@ -73,7 +73,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="search-form">
-									<form class="tourz-search-form">
+									<form action="pages_view_flights.php" class="tourz-search-form">
 										<div class="input-field">
 											
 										</div>

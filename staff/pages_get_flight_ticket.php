@@ -51,16 +51,15 @@
                     </ul>
                 </div>
                 <div class="sb2-2-3">
+                    <button id="print"  class="waves-effect waves-light btn-large btn-success" onclick="printContent('Print_Ticket');" ><i class="fa fa-print"></i>
+                         Print
+                    </button>
+                    <hr>              
                     <div class="row">
-                        <div id="PrintTicket" class="col-md-12">
+                        <div id="Print_Ticket" class="col-md-12">
                             <div class="box-inn-sp">
                                 <div class="inn-title">
                                     <img  src="images/logo1.png">
-                                    <a class="dropdown-button drop-down-meta" href="#" data-activates="dr-users"><i class="material-icons">more_vert</i></a>
-                                    <ul id="dr-users" class="dropdown-content">
-                                        <li><a href="javascript:window.print()"><i class="fa fa-print"></i>Print</a>
-                                        </li>
-                                    </ul>
                                 </div>
                                 <div class="tab-inn">
                                     <form method = 'POST' enctype="multipart/form-data">
@@ -198,6 +197,15 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/materialize.min.js"></script>
     <script src="js/custom.js"></script>
+    <script>
+        function printContent(el){
+        var restorepage = $('body').html();
+        var printcontent = $('#' + el).clone();
+        $('body').empty().html(printcontent);
+        window.print();
+        $('body').html(restorepage);
+        }
+    </script>
 </body>
 
 

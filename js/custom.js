@@ -78,31 +78,11 @@ $(document).ready(function() {
     //AUTO COMPLETE CITY SELECT
     $('#select-city,#select-city-1,#select-city-2,#select-city-3,#select-city-4,#select-city-5.autocomplete').autocomplete({
         data: {
-            "New York": null,
-            "California": null,
-            "Illinois": null,
-            "Texas": null,
-            "Pennsylvania": null,
-            "San Diego": null,
-            "Los Angeles": null,
-            "Dallas": null,
-            "Austin": null,
-            "Columbus": null,
-            "Charlotte": null,
-            "El Paso": null,
-            "Portland": null,
-            "Las Vegas": null,
-            "Oklahoma City": null,
-            "Milwaukee": null,
-            "Tucson": null,
-            "Sacramento": null,
-            "Long Beach": null,
-            "Oakland": null,
-            "Arlington": null,
-            "Tampa": null,
-            "Corpus Christi": null,
-            "Greensboro": null,
-            "Jersey City": null
+            "Nairobi":null,
+            "Mombasa":null,
+            "Voi":null,
+            "Taveta":null
+            
         },
         limit: 8, // The max amount of results that can be shown at once. Default: Infinity.
         onAutocomplete: function(val) {
@@ -113,42 +93,12 @@ $(document).ready(function() {
 
     $('#select-search,#select-search-1,#select-search-2.autocomplete').autocomplete({
         data: {
-            "Top Honeymoon Packages in India": 'images/icon/7.png',
-            "Family Package": 'images/icon/8.png',
-            "World Tour Package": 'images/icon/9.png',
-            "Hill Stations": 'images/icon/10.png',
-            "America Holidays": 'images/icon/11.png',
-            "Germany Holidays": 'images/icon/12.png',
-            "Hong Kong Holidays": 'images/icon/13.png',
-            "Europe Holidays": 'images/icon/14.png',
-            "France Holidays": 'images/icon/15.png',
-            "Switzerland,Bali,Thailand Package": 'images/icon/16.png',
-            "Maldives,Malaysia,Pattaya Package": 'images/icon/17.png',
-            "Dubai Packages": 'images/icon/18.png',
-            "Europe Tour Packages": 'images/icon/19.png',
-            "USA Tour Packages": 'images/icon/20.png',
-            "Mexico City, Mexico": 'images/icon/21.png',
-            "Seoul, South Korea": 'images/icon/22.png',
-            "Ljubljana, Slovenia": 'images/icon/23.png',
-            "Wroclaw, Poland": 'images/icon/24.png',
-            "Nashville, USA": 'images/icon/25.png',
-            "Amsterdam, the Netherlands": 'images/icon/26.png',
-            "First World Hotel": 'images/icon/27.png',
-            "MGM Grand Las Vegas Hotel": 'images/icon/28.png',
-            "CityCenter": 'images/icon/29.png',
-            "Holiday Hotel Inn": 'images/icon/13.png',
-            "Tour and Travel Packages": 'images/icon/14.png',
-            "City Seight Seeings": 'images/icon/15.png',
-"Mandarin Oriental, Hong Kong, China": 'images/icon/25.png',
-            "Trump International Hotel & Tower, New York, United States": 'images/icon/26.png',
-            "First World Hotel": 'images/icon/27.png',
-            "MGM Grand Las Vegas Hotel": 'images/icon/28.png',
-            "CityCenter": 'images/icon/29.png',
-            "Holiday Hotel Inn": 'images/icon/13.png',
-            "Tour and Travel Packages": 'images/icon/14.png',
-            "City Seight Seeings": 'images/icon/15.png'
+            "Boeing 720":'JFA-FLIGHT-8576',
+            "Cessna 350T": 'JFA-FLIGHT-9568',
+            "Cessna 320": 'JFA-FLIGHT-2483',
+            "Cessna 350T": 'JFA-FLIGHT-6572'            
         },
-        limit: 8, // The max amount of results that can be shown at once. Default: Infinity.
+        limit: 4, // The max amount of results that can be shown at once. Default: Infinity.
         onAutocomplete: function(val) {
             // Callback function when value is autcompleted.
         },

@@ -104,7 +104,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="search-form">
-									<form class="tourz-search-form">
+									<form action="pages_view_flights.php" class="tourz-search-form">
 										<div class="input-field">
 											
 										</div>
@@ -216,7 +216,7 @@
                                                 <label for="pay-ca">Card Number</label>
                                             </div>
                                         </div>
-                                        -->
+                                        
                                         <div class="row db-file-upload">
                                             <div class="file-field input-field">
                                                 <div class="db-up-btn"> <span>Profile Picture</span>
@@ -224,7 +224,7 @@
                                                 <div class="file-path-wrapper">
                                                     <input class="file-path validate" type="text"> </div>
                                             </div>
-                                        </div>
+                                        </div>-->
                                         <div class="row">
                                             <div class="input-field col s12">
                                                 <input type="submit" value="Update Profile" name="update_passenger" class="waves-effect waves-light full-btn"> </div>

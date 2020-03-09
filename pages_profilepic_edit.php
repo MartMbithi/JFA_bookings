@@ -4,28 +4,33 @@
 	include('_partials/checklogin.php');//load checklogin 
     check_login(); //invoke checklogin
     //load the upate password 
-    if(isset($_POST['update_pwd']))
+    $jp_id = $_SESSION['jp_id'];
+
+    if(isset($_POST['update_passenger_profile_pic']))
         {
+           
             $jp_id = $_SESSION['jp_id'];
-            $jp_pwd = sha1(md5($_POST['jp_pwd']));
+            $passport_pic = $_FILES["passport_pic"];
+            move_uploaded_file($_FILES["passport_pic"]["tmp_name"],"images/passenger/".$_FILES["passport_pic"]["name"]);
+
             //Insert Captured information to a database table
-            $query="UPDATE jordan_passengers  SET jp_pwd=? WHERE  jp_id=?";
+
+            $query="UPDATE jordan_passengers  SET passport_pic=? WHERE  jp_id=?";
             $stmt = $mysqli->prepare($query);
             //bind paramaters
-            $rc=$stmt->bind_param('si', $jp_pwd, $jp_id);
+            $rc=$stmt->bind_param('si', $passport_pic, $jp_id);
             $stmt->execute();
 
             //declare a varible which will be passed to alert function
             if($stmt)
             {
-                $success = "Password Updated";
+                $success = "Profile Picture Updated";
             }
             else {
                 $err = "Please Try Again Or Try Later";
             }      
         }
 
-    $jp_id = $_SESSION['jp_id'];//load the dashboard page using passenger id
     $ret="SELECT  * FROM  jordan_passengers  WHERE jp_id=?";
     $stmt= $mysqli->prepare($ret) ;
     $stmt->bind_param('i', $jp_id);
@@ -45,15 +50,24 @@
 							<img src='images/place3.jpg' alt='$row->jp_number' />
 						";
 			}
-			else
+			elseif($row->passport_pic == 'Array')
 			{
 				$passenger_dic =  	
 						"
 
-						<img src='images/passenger/$row->passport_pic' alt='$row->jp_number' />
+                        <img src='images/place3.jpg' alt='$row->jp_number' />
+
 
 						";
-			}
+            }
+            else
+            {
+                $passenger_dic = 
+                "
+                <img src='images/passenger/$row->passport_pic' alt='$row->jp_number' />
+
+                ";
+            }
     ?>
 	<!DOCTYPE html>
 		<html lang="en">
@@ -77,7 +91,7 @@
 									</div>
 									<div class="main-menu">
 										<ul>											
-											<li><a  href="pages_passenger_profile.php">Hello <?php echo $row->jp_name;?></a>
+											<li><a  href="pages_profile.php">Hello <?php echo $row->jp_name;?></a>
 											</li>
 											<li><a href="pages_logout.php">Log Out</a>
 											</li>
@@ -160,31 +174,31 @@
 						<!--Update Profile-->
 						<div class="db-2">
                             <div class="db-2-com db-2-main">
-                                <h4>Change Password</h4>
+                                <h4><?php echo $row->jp_name;?> Profile Piture </h4>
                                 <div class="db-2-main-com db2-form-pay db2-form-com">
                                 <!--Form-->
                                     <form method="post"  class="col s12" enctype="multipart/form-data">
+                                        
+                                        <!--
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <input type="password" required name=""  class="validate">
-                                                <label>Old Password</label>
+                                                <input id="pay-ca" type="number" class="validate">
+                                                <label for="pay-ca">Card Number</label>
+                                            </div>
+                                        </div>
+                                        -->
+                                        
+                                        <div class="row db-file-upload">
+                                            <div class="file-field input-field">
+                                                <div class="db-up-btn"> <span>Profile Picture</span>
+                                                    <input name="passport_pic" type="file"> </div>
+                                                <div class="file-path-wrapper">
+                                                    <input class="file-path validate" type="text"> </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <input type="password" required name="jp_pwd"  class="validate">
-                                                <label>New Password</label>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="input-field col s12">
-                                                <input type="password" required name=""  class="validate">
-                                                <label>Confirm New Password</label>
-                                            </div>
-                                        </div>                                        
-                                        <div class="row">
-                                            <div class="input-field col s12">
-                                                <input type="submit" value="Change Password" name="update_pwd" class="waves-effect waves-light btn-success btn-large"> </div>
+                                                <input type="submit" value="Update Profile Picture" name="update_passenger_profile_pic" class="waves-effect waves-light full-btn"> </div>
                                         </div>
                                     </form>
                                     <!--End Form--->
@@ -193,6 +207,7 @@
                         </div>
 						<!--Notifications-->
 						<?php include("_partials/notifications.php");?>
+
 					</div>
 				</section>
 			<!--Footer-->

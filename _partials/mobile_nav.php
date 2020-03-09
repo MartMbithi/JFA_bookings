@@ -14,23 +14,21 @@
                             <a href="pages_dashboard.php" class="ed-mi-close"><i class="fa fa-times"></i></a>
                             <h4 class="ed-dr-men-mar-top">Profile</h4>
                             <ul>
-                                <li><a href="pages_register.php">My Profile</a></li>
-                                <li><a href="pages_login.php">Change Password</a></li>
+                                <li><a href="pages_passenger_profile.php">My Profile</a></li>
+                                <li><a href="pages_change_pwd.php">Change Password</a></li>
                             </ul>
                             <h4 class="ed-dr-men-mar-top">Flights</h4>
                             <ul>
                                 <li><a href="pages_view_flights.php">View Flights</a></li>
-                                <li><a href="pages_book_flight_reservation.php">Reserve</a></li>
+                                <li><a href="pages_flight_reservations.php">Reserve</a></li>
                            </ul>
                            <h4 class="ed-dr-men-mar-top">Reservations</h4>
                             <ul>
-                                <li><a href="pages_view_reservations.php">My Reservations</a></li>
-                                <li><a href="pages_manage_reservatins.php">Manage Resevations</a></li>
+                                <li><a href="pages_my_reservations.php">My Reservations</a></li>
                            </ul>
                            <h4 class="ed-dr-men-mar-top">Finaces</h4>
                             <ul>
-                                <li><a href="pages_set_paymentplan.php">My Payment Method</a></li>
-                                <li><a href="pages_pay_reservation.php">Pay Reservation</a></li>
+                                <li><a href="pages_reservations_paymanets.php">Pay Reservation</a></li>
                            </ul>
                            <h4 class="ed-dr-men-mar-top">Tickets</h4>
                             <ul>

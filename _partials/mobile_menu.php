@@ -14,14 +14,18 @@
                             <a href="index.php" class="ed-mi-close"><i class="fa fa-times"></i></a>
                             <h4 class="ed-dr-men-mar-top">Passenger Account</h4>
                             <ul>
-                                <li><a href="pages_register.php">Register</a></li>
-                                <li><a href="pages_login.php">Login</a></li>
+                                <li><a href="pages_signup.php">Register</a></li>
+                                <li><a href="pages_signin.php">Login</a></li>
                                 <li><a href="pages_reset_pwd.php">Forgot pass</a></li>
+                            </ul>
+                            <h4 class="ed-dr-men-mar-top">Flights</h4>
+                            <ul>
+                                <li><a href="pages_flights.php">Our Flights</a></li>
                             </ul>
                             <h4 class="ed-dr-men-mar-top">Staff Account</h4>
                             <ul>
                                 <li><a href="staff/">Staff Login</a></li>
-                                <li><a href="staff/">Admin Login</a></li>
+                                <li><a href="admin/">Admin Login</a></li>
 
                             </ul>
                                                         

@@ -10,7 +10,7 @@
     $stmt->bind_param('i', $jp_id);
     $stmt->execute() ;//ok
     $res=$stmt->get_result();
-    //$cnt=1;
+    //$cnt=1;include('_partials/config.php');
     while($row=$res->fetch_object())
     {
         //TRIM TIMESTAMP TO DD-MM-YYYY FORMART
@@ -73,7 +73,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="search-form">
-									<form class="tourz-search-form">
+									<form action="pages_view_flights.php" class="tourz-search-form">
 										<div class="input-field">
 											
 										</div>

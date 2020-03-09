@@ -6,9 +6,7 @@
                     <div class="col-md-12">
                         <div class="ed-com-t1-left">
                             <ul>
-                                <li><a href="#">Contact: Lake Road, Suite 180 Farmington Hills, U.S.A.</a>
-                                </li>
-                                <li><a href="#">Phone: +254740 847 563</a>
+                                <li><a href="#">Phone: +254 792 419 499</a>
                                 </li>
                             </ul>
                         </div>
@@ -41,18 +39,18 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="wed-logo">
-                            <a href="main.html"><img src="images/logo.png" alt="" />
+                            <a href="index.php"><img src="images/logo.png" alt="" />
                             </a>
                         </div>
                         <div class="main-menu">
                             <ul>
                                 <li><a href="index.php">Home</a>
                                 </li>
-                                <li><a href="events.html">Events</a>
+                                <li><a href="pages_flights.php">Flights</a>
                                 </li>
-                                <li><a href="dashboard.html">Profile</a>
+                                <li><a target = "_blank" href="staff/">Staff Portal</a>
                                 </li>
-                                <li><a href="contact.html">Contact us</a>
+                                <li><a target = "_blank" href="admin/">Admin Portal</a>
                                 </li>
                             </ul>
                         </div>
