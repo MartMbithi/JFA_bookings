@@ -13,8 +13,5 @@
 
 # Dummy User Login Credentials
 ```
-1. Admin:
-Email : sysadmin@jfa.org
-Password: (Try) admin, 123, demo 
-im no so sure whih password they used
+See attached documentation.
 ```
